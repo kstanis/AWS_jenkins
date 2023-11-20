@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     // Используйте DOCKER_HOST в качестве переменной окружения для команды 'docker'
-                    sh docker ps -a"
+                    sh "docker ps -a"
                 }
             }
         }
