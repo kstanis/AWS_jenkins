@@ -12,6 +12,7 @@ pipeline {
                     sh "whoami"
                     sh "ssh -i /var/lib/jenkins/id_rsa -nNT -L \$(pwd)/docker.sock:/var/run/docker.sock ${STAGE_INSTANCE} & echo \$! > /tmp/tunnel.pid"
                     // Иногда не достаточно времени для создания туннеля, добавим паузу
+                    sh "cat /tmp/tunnel.pid"
                     sleep 15
                 }
             }
