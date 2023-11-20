@@ -10,7 +10,7 @@ pipeline {
                 script {
                     // Используйте тройные кавычки для многострочных команд
                     sh """
-                        ssh -nNT -L ${WORKSPACE}/docker.sock:/var/run/docker.sock ${STAGE_INSTANCE} & echo \$! > /tmp/tunnel.pid
+                        ssh -nNT -L $run/docker.sock:/var/run/docker.sock ${STAGE_INSTANCE} & echo \$! > /tmp/tunnel.pid
                         sleep 5
                     """
                 }
