@@ -20,8 +20,9 @@ pipeline {
             steps {
                 script {
                     echo "${DOCKER_HOST}"
-                    sh "ls -la rm /var/lib/jenkins/workspace/AWS/"
+                    sh "ls -la /var/lib/jenkins/workspace/AWS/"
                     sh "DOCKER_HOST=${DOCKER_HOST} docker ps -a"
+                    sh "echo 111"
                 }
             }
         }
