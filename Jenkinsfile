@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HOST = "unix://$/run/docker.sock"
+        DOCKER_HOST = "unix://$run/docker.sock"
         STAGE_INSTANCE = "ubuntu@ip-10-0-0-144.eu-north-1.compute.internal"
     }
     stages {
