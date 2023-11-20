@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_HOST = "unix://\$(pwd)/docker.sock"
-        STAGE_INSTANCE = "ubuntu@aws-dns"
+        STAGE_INSTANCE = "ubuntu@16.171.144.230"
     }
     stages {
         stage('Setup SSH tunnel') {
