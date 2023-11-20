@@ -10,8 +10,7 @@ pipeline {
                 script {
 
                     sh "whoami"
-                    sh "ls -lah /home/ubuntu/.ssh/"
-                    sh "ssh -i /home/ubuntu/.ssh/id_rsa -nNT -L \$(pwd)/docker.sock:/var/run/docker.sock ${STAGE_INSTANCE} & echo \$! > /tmp/tunnel.pid"
+                    sh "ssh -i id_rsa -nNT -L \$(pwd)/docker.sock:/var/run/docker.sock ${STAGE_INSTANCE} & echo \$! > /tmp/tunnel.pid"
                     // Иногда не достаточно времени для создания туннеля, добавим паузу
                     sleep 5
                 }
