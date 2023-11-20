@@ -2,24 +2,21 @@ pipeline {
     agent any
     environment {
         DOCKER_HOST = "unix://\$(pwd)/docker.sock"
-        STAGE_INSTANCE = "ubuntu@16.171.144.230"
+        STAGE_INSTANCE = "ubuntu@aws-dns"
     }
     stages {
-        stage('Настройка SSH-туннеля') {
+        stage('Setup SSH tunnel') {
             steps {
                 script {
-                    // Используйте тройные кавычки для многострочных команд
-                    sh """
-                        ssh -nNT -L ${WORKSPACE}/docker.sock:/var/run/docker.sock ${STAGE_INSTANCE} & echo \$! > /tmp/tunnel.pid
-                        sleep 5
-                    """
+                    sh "ssh -nNT -L \$(pwd)/docker.sock:/var/run/docker.sock ${STAGE_INSTANCE} & echo \$! > /tmp/tunnel.pid"
+                    // Иногда не достаточно времени для создания туннеля, добавим паузу
+                    sleep 5
                 }
             }
         }
-        stage('Развертывание') {
+        stage('Deploy') {
             steps {
                 script {
-                    // Используйте DOCKER_HOST в качестве переменной окружения для команды 'docker'
                     sh "DOCKER_HOST=${DOCKER_HOST} docker ps -a"
                 }
             }
@@ -28,7 +25,6 @@ pipeline {
     post {
         always {
             script {
-                // Очистка: Завершение SSH-туннеля
                 sh "pkill -F /tmp/tunnel.pid"
             }
         }
