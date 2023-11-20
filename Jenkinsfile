@@ -25,7 +25,7 @@ pipeline {
     post {
         always {
             script {
-                sh "pkill -F /tmp/tunnel.pid"
+                sh "pkill -F /tmp/tunnel.pid" & "rm /tmp/tunnel.pid"
             }
         }
     }
