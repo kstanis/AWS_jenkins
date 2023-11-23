@@ -5,7 +5,7 @@ pipeline {
         stage('Connect') {
             steps {
                 script {
-                    sh "ssh -i /var/lib/jenkins/jenkins_key -o StrictHostKeyChecking=no -nNT -L \$(pwd)/docker.sock:/var/run/docker.sock ubuntu@13.51.169.103 & echo \$! > /tmp/tunnel.pid"
+                    sh "ssh -i /var/lib/jenkins/jenkins_key -o StrictHostKeyChecking=no -nNT -L \$(pwd)/docker.sock:/var/run/docker.sock ubuntu@16.171.116.94 & echo \$! > /tmp/tunnel.pid"
                     
                     sleep 5
                 }
