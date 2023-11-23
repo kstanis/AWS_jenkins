@@ -1,29 +1,20 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_HOST = "unix:/\$(pwd)/docker.sock"
-        STAGE_INSTANCE = "ubuntu@16.171.144.230"
-    }
+
     stages {
-        stage('Setup SSH tunnel') {
+        stage('Connect') {
             steps {
                 script {
-
-                    sh "whoami"
-                    sh "ssh -i /var/lib/jenkins/id_rsa -nNT -L \$(pwd)/docker.sock:/var/run/docker.sock ${STAGE_INSTANCE} & echo \$! > /tmp/tunnel.pid"
-                    // Иногда не достаточно времени для создания туннеля, добавим паузу
-                    sh "cat /tmp/tunnel.pid"
-                    sleep 15
+                    sh "ssh -i /var/lib/jenkins/jenkins_key -o StrictHostKeyChecking=no -nNT -L \$(pwd)/docker.sock:/var/run/docker.sock ubuntu@13.51.169.103 & echo \$! > /tmp/tunnel.pid"
+                    
+                    sleep 5
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    echo "${DOCKER_HOST}"
-                    sh "ls -la /var/lib/jenkins/workspace/AWS/"
-                    sh "DOCKER_HOST=${DOCKER_HOST} docker ps -a"
-                    sh "echo 111"
+                    sh 'DOCKER_HOST=unix://\$(pwd)/docker.sock docker ps -a'
                 }
             }
         }
@@ -31,8 +22,7 @@ pipeline {
     post {
         always {
             script {
-                sh "rm /var/lib/jenkins/workspace/AWS/docker.sock"
-                sh "pkill -F /tmp/tunnel.pid" & "rm /tmp/tunnel.pid"
+                sh 'pkill -F /tmp/tunnel.pid & rm /var/lib/jenkins/workspace/AWS/docker.sock'
             }
         }
     }
